@@ -29,6 +29,12 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index'])->middleware(['auth', 'verified'])->name('orders');
+
+Route::get('/create', [\App\Http\Controllers\OrderController::class, 'create'])->middleware(['auth', 'verified'])->name('order_create');
+
+Route::post('/store', [\App\Http\Controllers\OrderController::class, 'store'])->middleware(['auth', 'verified'])->name('order.store');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

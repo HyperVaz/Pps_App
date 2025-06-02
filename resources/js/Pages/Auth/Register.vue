@@ -27,7 +27,8 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Name" />
-
+<!--                TODO:-->
+<!--                Переведи компонент-->
                 <TextInput
                     id="name"
                     type="text"

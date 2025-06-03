@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRequest;
 use App\Models\Orders;
+use http\Client\Curl\User;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Orders::all();
+        $orders = Orders::where('user_id', auth()->id())->get();
         return inertia('Orders/Index', compact('orders'));
     }
 
@@ -21,6 +22,10 @@ class OrderController extends Controller
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        Orders::create($data);
+        Orders::create([
+            'user_id' => auth()->id(),
+            'name' => $request->name,
+            'description' => $request->description,
+        ]);
     }
 }

@@ -18,8 +18,8 @@
                 <tr class="bg-white border-b border-blue-500">
                     <td class="py-2 px-4">{{order.name}}</td>
                     <td class="py-2 px-4">{{order.description}}</td>
-                    <td class="py-2 px-4">{{order.order_created_at}}</td>
-                    <td class="py-2 px-4">{{order.order_status}}</td>
+                    <td class="py-2 px-4">{{order.created_at}}</td>
+                    <td class="py-2 px-4">{{order.status}}</td>
                 </tr>
                 </tbody>
             </table>

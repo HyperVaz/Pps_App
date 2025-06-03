@@ -16,8 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->index()->constrained('users');
             $table->string('name');
             $table->text('description');
-            $table->timestamp('order_created_at')->useCurrent();
-            $table->char('order_status');
+            $table->char('status')->default('В процессе...');
             $table->timestamps();
         });
     }

@@ -1,6 +1,6 @@
 <template>
     <AuthenticatedLayout>
-        <form @submit.prevent="storeOrder" class="content">
+        <form @submit.prevent="storeOrder" enctype="multipart/form-data" class="content">
             <div class="bg-white border border-4 rounded-lg shadow relative m-10">
                 <div class="flex items-start justify-between p-5 border-b rounded-t">
                     <h3 class="text-xl font-semibold">
@@ -34,6 +34,7 @@
                                 <textarea v-model="description" type="text" name="category" id="category"
                                           class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                           placeholder="Опишите кратко необходимый ремонт" required=""></textarea>
+                                <input @change="handleFileUpload" name="pictures[]" multiple type="file" placeholder="Загрузите изображение">
                             </div>
                         </div>
                     </div>
@@ -45,8 +46,6 @@
                         type="submit">Отправить
                     </button>
                 </div>
-                <!--                TODO:-->
-                <!--                Что делать с csrf?-->
             </div>
         </form>
     </AuthenticatedLayout>
@@ -68,17 +67,20 @@ export default {
         return {
             name: '',
             description: '',
-            _token: ''
+            picture: ''
         }
     },
     methods: {
+        handleFileUpload(e){
+            this.pictures = e.target.files;
+        },
         storeOrder() {
             this.$inertia.post('/store', {
                 name: this.name,
                 description: this.description,
-                user_id: this.$page.props.auth.user.id
-                // TODO:
-                // Добавить обнуление формы и попап
+                pictures: this.pictures
+            //     // TODO:
+            //     // Добавить обнуление формы и попап
             })
         }
     }

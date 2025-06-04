@@ -5,18 +5,18 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Orders extends Model
+class Pictures extends Model
 {
     use HasFactory;
+
     protected $guarded = false;
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id');
     }
-
-    public function pictures()
+    public function order()
     {
-        return $this->hasMany(Pictures::class, 'order_id');
+        return $this->belongsTo(Orders::class, 'order_id');
     }
 }

@@ -35,6 +35,12 @@ Route::get('/create', [\App\Http\Controllers\OrderController::class, 'create'])-
 
 Route::post('/store', [\App\Http\Controllers\OrderController::class, 'store'])->middleware(['auth', 'verified'])->name('order.store');
 
+Route::delete('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'destroy'])->middleware(['auth', 'verified'])->name('order.destroy');
+
+Route::get('/orders/{order}/edit', [\App\Http\Controllers\OrderController::class, 'edit'])->middleware(['auth', 'verified'])->name('order.edit');
+
+Route::patch('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'update'])->middleware(['auth', 'verified'])->name('order.update');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -30,7 +30,10 @@
                             class="w-full"
                         >
                     </td>
+                    <button class="text-right" @click="deleteOrder(order.id)">x</button>
+                    <Link :href="route('order.edit', { order: order.id })">Редактировать</Link>
                 </tr>
+
                 </tbody>
             </table>
         </div>
@@ -38,7 +41,7 @@
 </template>
 <script>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import {Head} from "@inertiajs/vue3";
+import {Head, Link} from "@inertiajs/vue3";
 
 export default {
     props: [
@@ -46,8 +49,14 @@ export default {
         'pictures'
     ],
     components: {
+        Link,
         AuthenticatedLayout,
         Head
+    },
+    methods:{
+        deleteOrder(orderId){
+            return this.$inertia.delete(`orders/${orderId}`)
+        }
     }
 }
 </script>

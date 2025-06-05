@@ -22,6 +22,16 @@ class OrderController extends Controller
     {
         return inertia('Orders/Create');
     }
+
+    public function destroy(Orders $order)
+    {
+        $order->delete();
+    }
+
+    public function edit(Orders $order)
+    {
+        return inertia('Orders/Edit', compact('order'));
+    }
     public function store(StoreRequest $request)
     {
 

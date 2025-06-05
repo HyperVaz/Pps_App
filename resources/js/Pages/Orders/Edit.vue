@@ -1,6 +1,6 @@
 <template>
     <AuthenticatedLayout>
-        <form @submit.prevent="storeOrder" enctype="multipart/form-data" class="content">
+        <form @submit.prevent="updateOrder" enctype="multipart/form-data" class="content">
             <div class="bg-white border border-4 rounded-lg shadow relative m-10">
                 <div class="flex items-start justify-between p-5 border-b rounded-t">
                     <h3 class="text-xl font-semibold">
@@ -59,23 +59,26 @@ import {router, usePage} from '@inertiajs/vue3'
 const page = usePage()
 
 export default {
+    props:[
+        'order'
+    ],
     components: {
         AuthenticatedLayout,
         Head
     },
     data() {
         return {
-            name: '',
-            description: '',
-            pictures: []
+            name: this.order.name,
+            description: this.order.description,
+            pictures: this.order.pictures
         }
     },
     methods: {
         handleFileUpload(e){
             this.pictures = e.target.files;
         },
-        storeOrder() {
-            this.$inertia.post('/store', {
+        updateOrder() {
+            this.$inertia.patch(`/orders/${this.id}`, {
                 name: this.name,
                 description: this.description,
                 pictures: this.pictures

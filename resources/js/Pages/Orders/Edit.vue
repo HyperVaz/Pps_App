@@ -78,16 +78,16 @@ export default {
             this.pictures = e.target.files;
         },
         updateOrder() {
-            this.$inertia.patch(`/orders/${this.id}`, {
+            this.$inertia.patch(`/orders/${this.order.id}`, {
                 name: this.name,
                 description: this.description,
                 pictures: this.pictures
             //     // TODO:
             //     // Добавить обнуление формы и попап
             })
-            this.name = '';
-            this.description = '';
-            this.pictures = '';
+            // this.name = '';
+            // this.description = '';
+            // this.pictures = '';
         }
     }
 }

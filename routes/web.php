@@ -32,7 +32,8 @@ Route::get('/dashboard', function () {
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index'])->middleware(['auth', 'verified'])->name('orders');
 
 Route::get('/create', [\App\Http\Controllers\OrderController::class, 'create'])->middleware(['auth', 'verified'])->name('order_create');
-
+//TODO:
+//Допиши реквест и экщен
 Route::post('/store', [\App\Http\Controllers\OrderController::class, 'store'])->middleware(['auth', 'verified'])->name('order.store');
 
 Route::delete('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'destroy'])->middleware(['auth', 'verified'])->name('order.destroy');

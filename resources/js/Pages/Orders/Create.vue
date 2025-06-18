@@ -4,7 +4,7 @@
             <div class="bg-white border border-4 rounded-lg shadow relative m-10">
                 <div class="flex items-start justify-between p-5 border-b rounded-t">
                     <h3 class="text-xl font-semibold">
-                        Edit product
+                        Создать заявку
                     </h3>
                     <button type="button"
                             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
@@ -33,8 +33,21 @@
                                        class="text-sm font-medium text-gray-900 block mb-2">Описание</label>
                                 <textarea v-model="description" type="text" name="category" id="category"
                                           class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                          placeholder="Опишите кратко необходимый ремонт" required=""></textarea>
-                                <input @change="handleFileUpload" name="pictures[]" multiple type="file" placeholder="Загрузите изображение">
+                                          placeholder="Опишите кратко необходимый ремонт" required></textarea>
+                                <input
+                                    @change="handleFileUpload"
+                                    name="pictures[]"
+                                    multiple type="file"
+                                    placeholder="Загрузите изображение"
+                                    class="my-4">
+                                <div class="flex flex-wrap" v-if="pictures">
+                                    <div class="mx-2 my-1" v-for="(picture, index) in pictures" :key="index">
+                                        <p>{{ picture.name }}</p>
+                                        <img :src="picture.url" alt="" class="w-30">
+<!--                                        TODO:-->
+<!--                                        Добавить кнопку удаления картинки-->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,26 +80,38 @@ export default {
         return {
             name: '',
             description: '',
-            pictures: []
-            // TODO:
-            // Поддержка множественной загрузки изображений
+            pictures: [],
+            files: [],
         }
     },
     methods: {
         handleFileUpload(e){
-            this.pictures = e.target.files;
+            const newFiles = Array.from(e.target.files).map(file =>({
+                file,
+                url: URL.createObjectURL(file)
+            }))
+            this.pictures = [...this.pictures, ...newFiles]
+        },
+        beforeUnmount() {
+            this.pictures.forEach(p => URL.revokeObjectURL(p.url));
         },
         storeOrder() {
-            this.$inertia.post('/store', {
-                name: this.name,
-                description: this.description,
-                pictures: this.pictures
-            //     // TODO:
-            //     // Добавить обнуление формы и попап
+            const formData = new FormData();
+            formData.append('name', this.name);
+            formData.append('description', this.description);
+            this.pictures.forEach((value, index) => {
+                formData.append(`pictures[${index}]` ,value.file);
             })
+            this.$inertia.post('/store', formData, {
+                onSuccess: ()=>{
+                    this.resetForm();
+                }
+            })
+        },
+        resetForm(){
             this.name = '';
             this.description = '';
-            this.pictures = '';
+            this.pictures = [];
         }
     }
 }

@@ -35,6 +35,14 @@
                                           class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                           placeholder="Опишите кратко необходимый ремонт" required=""></textarea>
                                 <input @change="handleFileUpload" name="pictures[]" multiple type="file" placeholder="Загрузите изображение">
+                                <div class="flex flex-wrap" v-if="pictures">
+                                    <div class="mx-2 my-1" v-for="(picture, index) in pictures" :key="index">
+                                        <p>{{ picture.name }}</p>
+                                        <img :src="'/storage/' + picture.path" alt="" class="w-30">
+                                        <!--                                        TODO:-->
+                                        <!--                                        Добавить кнопку удаления картинки-->
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

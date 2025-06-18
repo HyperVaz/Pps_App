@@ -19,7 +19,7 @@
                 <tr class="bg-white border-b border-blue-500">
                     <td class="py-2 px-4">{{order.name}}</td>
                     <td class="py-2 px-4">{{order.description}}</td>
-                    <td class="py-2 px-4">{{order.created_at}}</td>
+                    <td class="py-2 px-4">{{formatDate(order.created_at)}}</td>
                     <td class="py-2 px-4">{{order.status}}</td>
                     <td class="py-2 px-4">
                         <img
@@ -27,11 +27,13 @@
                             :key="picture.id"
                             :src="'/storage/' + picture.path"
                             alt="Изображение заказа"
-                            class="w-full"
+                            class="w-21 h-100 m-1"
                         >
                     </td>
-                    <button class="text-right" @click="deleteOrder(order.id)">x</button>
-                    <Link :href="route('order.edit', { order: order.id })">Редактировать</Link>
+                    <td>
+                    <button class="text-right my-50" @click="deleteOrder(order.id)">x</button>
+                    <Link class="content-end" :href="route('order.edit', { order: order.id })">Редактировать</Link>
+                    </td>
                 </tr>
 
                 </tbody>
@@ -56,6 +58,10 @@ export default {
     methods:{
         deleteOrder(orderId){
             return this.$inertia.delete(`orders/${orderId}`)
+        },
+        formatDate(date) {
+            return new Date(date).toLocaleDateString('ru-RU')
+            // "01.05.2023" или другой формат
         }
     }
 }

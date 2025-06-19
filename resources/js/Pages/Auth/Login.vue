@@ -31,8 +31,6 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-<!--        TODO:-->
-<!--        убрать приписку Laravel-->
         <Head title="Войти" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">

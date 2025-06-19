@@ -36,11 +36,10 @@
                                           placeholder="Опишите кратко необходимый ремонт" required=""></textarea>
                                 <input @change="handleFileUpload" name="pictures[]" multiple type="file" placeholder="Загрузите изображение">
                                 <div class="flex flex-wrap" v-if="pictures">
-                                    <div class="mx-2 my-1" v-for="(picture, index) in pictures" :key="index">
+                                    <div class="relative mx-2 my-1" v-for="(picture, index) in pictures" :key="index">
                                         <p>{{ picture.name }}</p>
                                         <img :src="'/storage/' + picture.path" alt="" class="w-30">
-                                        <!--                                        TODO:-->
-                                        <!--                                        Добавить кнопку удаления картинки-->
+                                        <button class="text-red-600 font-bold top-1 right-3 text-5xl absolute" @click="deletePicture(index)">x</button>
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +83,11 @@ export default {
     methods: {
         handleFileUpload(e){
             this.pictures = e.target.files;
+        },
+        deletePicture(index) {
+            URL.revokeObjectURL(this.pictures[index].url)
+            this.pictures.splice(index, 1)
+            this.$refs.fileInput.value = '';
         },
         updateOrder() {
             this.$inertia.patch(`/orders/${this.order.id}`, {

@@ -35,19 +35,21 @@
                                           class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                           placeholder="Опишите кратко необходимый ремонт" required></textarea>
                                 <input
+                                    ref="fileInput"
                                     @change="handleFileUpload"
                                     name="pictures[]"
                                     multiple type="file"
                                     placeholder="Загрузите изображение"
                                     class="my-4">
+
                                 <div class="flex flex-wrap" v-if="pictures">
-                                    <div class="mx-2 my-1" v-for="(picture, index) in pictures" :key="index">
+                                    <div class="mx-2 my-1 relative" v-for="(picture, index) in pictures" :key="index">
                                         <p>{{ picture.name }}</p>
                                         <img :src="picture.url" alt="" class="w-30">
-<!--                                        TODO:-->
-<!--                                        Добавить кнопку удаления картинки-->
+                                        <button class="text-red-600 font-bold top-1 right-3 text-5xl absolute" @click="deletePicture(index)">x</button>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -91,6 +93,11 @@ export default {
                 url: URL.createObjectURL(file)
             }))
             this.pictures = [...this.pictures, ...newFiles]
+        },
+        deletePicture(index) {
+            URL.revokeObjectURL(this.pictures[index].url)
+            this.pictures.splice(index, 1)
+            this.$refs.fileInput.value = '';
         },
         beforeUnmount() {
             this.pictures.forEach(p => URL.revokeObjectURL(p.url));

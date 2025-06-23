@@ -16,6 +16,8 @@ return new class extends Migration
             $table->foreignId('user_id')->index()->constrained('users')->cascadeOnDelete();
             $table->string('name');
             $table->text('description');
+            $table->string('phone', 20)->nullable();
+            $table->string('tg')->nullable();
             $table->char('status')->default('В процессе...');
             $table->timestamps();
         });

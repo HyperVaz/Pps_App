@@ -12,6 +12,11 @@ use Illuminate\Support\Facades\Storage;
 
 class OrderController extends Controller
 {
+    public function dashboard()
+    {
+        $orders = Orders::query()->count();
+        return inertia('Profile/Dashboard', compact('orders'));
+    }
     public function index()
     {
         $orders = Orders::with('pictures')->where('user_id', auth()->id())->get();
@@ -30,23 +35,14 @@ class OrderController extends Controller
         $order->delete();
     }
 
-    public function edit(Orders $order)
-    {
-        $order = Orders::with('pictures')->find($order->id);
-        return inertia('Orders/Edit', compact('order'));
-    }
-
-//    public function update(Orders $order, updateRequest $request)
-//    {
-//
-//    }
-
     public function store(StoreRequest $request)
     {
         $order = Orders::create([
             'user_id' => auth()->id(),
             'name' => $request->name,
             'description' => $request->description,
+            'phone' => str_replace('-', '', $request->phone),
+            'tg'=> $request->tg
         ]);
 
         if ($request->hasFile('pictures')) {

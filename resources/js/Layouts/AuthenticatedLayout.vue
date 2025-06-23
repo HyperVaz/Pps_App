@@ -30,12 +30,12 @@ const showingNavigationDropdown = ref(false);
                             <!-- Navigation Links -->
                             <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Dashboard
+                                    На главную
                                 </NavLink>
                                 <NavLink :href="route('orders')" :active="route().current('orders')">
                                     Мои заявки
                                 </NavLink>
-                                <NavLink :href="route('order_create')" :active="route().current('orders')">
+                                <NavLink :href="route('order_create')" :active="route().current('order_create')">
                                     Создать заявку
                                 </NavLink>
                             </div>

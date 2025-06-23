@@ -24,7 +24,9 @@ class StoreRequest extends FormRequest
         return [
             'name'=> 'required|string',
             'description'=> 'required|string',
-            'pictures.*' => 'nullable|image|mimes:jpeg,png|max:15048'
+            'pictures.*' => 'nullable|image|mimes:jpeg,png|max:15048',
+            'phone' => 'nullable|regex:/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/',
+            'tg' => 'nullable|string'
         ];
     }
 }

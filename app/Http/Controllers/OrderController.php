@@ -14,14 +14,18 @@ class OrderController extends Controller
 {
     public function dashboard()
     {
-        $orders = Orders::query()->count();
-        return inertia('Profile/Dashboard', compact('orders'));
+        $ordersCount = Orders::where('user_id', auth()->id())->count();
+        return inertia('Dashboard', [
+            'ordersCount' => $ordersCou
+        ]);
     }
     public function index()
     {
         $orders = Orders::with('pictures')->where('user_id', auth()->id())->get();
+        $ordersCount = Orders::where('user_id', auth()->id())->count();
         return inertia('Orders/Index', [
-            'orders' => $orders
+            'orders' => $orders,
+            'ordersCount' => $ordersCount
         ]);
     }
 

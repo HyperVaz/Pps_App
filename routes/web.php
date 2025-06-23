@@ -25,9 +25,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\OrderController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index'])->middleware(['auth', 'verified'])->name('orders');
 

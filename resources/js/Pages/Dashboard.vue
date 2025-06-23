@@ -2,12 +2,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
 import NavLink from "@/Components/NavLink.vue";
-
-defineProps({
-    openOrders: Number,
-    closedOrders: Number,
-    news: Array
-});
 </script>
 
 <template>
@@ -18,7 +12,6 @@ defineProps({
             <div class="bg-gradient-to-r from-green-400 to-green-600 py-8 px-6 rounded-b-xl shadow-lg">
                 <h1 class="text-3xl font-bold text-white text-center animate-fade-in">
                     Добро пожаловать в наш сервис!
-                    <div>Итого заказов {{orders}}</div>
                 </h1>
                 <p class="text-green-100 text-center mt-2 text-lg">
                     Удобная платформа для управления вашими заказами
@@ -39,11 +32,11 @@ defineProps({
                         </div>
                         <div class="px-6 py-4 grid grid-cols-2 gap-4">
                             <div class="text-center p-4 bg-green-50 rounded-lg">
-                                <div class="text-4xl font-bold text-green-600">{{ openOrders }}</div>
-                                <div class="text-green-800 mt-2">Открытых</div>
+                                <div class="text-4xl font-bold text-green-600"></div>
+                                <div class="text-green-800 mt-2">Открытых {{ordersCount}}</div>
                             </div>
                             <div class="text-center p-4 bg-green-50 rounded-lg">
-                                <div class="text-4xl font-bold text-green-600">{{ closedOrders }}</div>
+                                <div class="text-4xl font-bold text-green-600"></div>
                                 <div class="text-green-800 mt-2">Завершенных</div>
                             </div>
                         </div>
@@ -120,8 +113,12 @@ defineProps({
 <script>
 export default {
     props: [
-        'orders',
-    ],}
+        'ordersCount'
+    ],
+    mounted() {
+        console.log('Получено ordersCount:', this.ordersCount) // Проверьте консоль
+    }
+}
 </script>
 <style>
 .animate-fade-in {

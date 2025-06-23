@@ -94,7 +94,7 @@ export default {
     },
     props: [
         'orders',
-        'pictures'
+        'pictures',
     ],
     components: {
         Link,

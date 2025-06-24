@@ -16,7 +16,7 @@ class OrderController extends Controller
     {
         $ordersCount = Orders::where('user_id', auth()->id())->count();
         return inertia('Dashboard', [
-            'ordersCount' => $ordersCou
+            'ordersCount' => $ordersCount
         ]);
     }
     public function index()

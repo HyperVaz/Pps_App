@@ -9,6 +9,7 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gradient-to-r from-blue-500 to-cyan-600">
                     <tr>
+                        <th v-if="is_admin" class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Имя пользователя</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Название заявки</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Описание</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Создана</th>
@@ -21,6 +22,7 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                     <tr v-for="order in orders" :key="order.id" class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{order.user.name}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{order.name}}</td>
                         <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{{order.description}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{formatDate(order.created_at)}}</td>
@@ -32,6 +34,14 @@
             }" class="px-3 py-1 rounded-full text-xs font-semibold">
               {{order.status}}
             </span>
+                            <div v-if="is_admin">
+                                <select>
+                                    <option value="option1">В процессе</option>
+                                    <option value="option2">Принят в работу</option>
+                                    <option value="option3">Готов</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
                         </td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{order.phone}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-500 hover:text-blue-700 text-center">
@@ -95,6 +105,7 @@ export default {
     props: [
         'orders',
         'pictures',
+        'is_admin',
     ],
     components: {
         Link,

@@ -1,9 +1,11 @@
 <?php
-
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+require __DIR__ . '/auth.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -25,24 +27,24 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', [\App\Http\Controllers\OrderController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/orders', [\App\Http\Controllers\OrderController::class, 'index'])->middleware(['auth', 'verified'])->name('orders');
-
-Route::get('/create', [\App\Http\Controllers\OrderController::class, 'create'])->middleware(['auth', 'verified'])->name('order_create');
-
-Route::post('/store', [\App\Http\Controllers\OrderController::class, 'store'])->middleware(['auth', 'verified'])->name('order.store');
-
-Route::delete('/orders/{order}', [\App\Http\Controllers\OrderController::class, 'destroy'])->middleware(['auth', 'verified'])->name('order.destroy');
-
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::prefix('profile')->group(function () {
+        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
+    Route::middleware('verified')->group(function () {
+        Route::get('/dashboard', [OrderController::class, 'dashboard'])->name('dashboard');
+        Route::resource('orders', OrderController::class)->only(['index', 'create', 'store', 'destroy'])->names([
+            'index' => 'orders',
+            'create' => 'orders.create',
+            'store' => 'orders.store',
+            'destroy' => 'orders.destroy'
+        ]);
+        Route::prefix('admin')->middleware('admin')->group(function () {
+            Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+            Route::get('/orders', [AdminController::class, 'index'])->name('admin.orders');
+        });
+    });
 });
-
-Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->middleware('admin')->name('dashboard');
-
-Route::get('/orders', [\App\Http\Controllers\AdminController::class, 'index'])->middleware('admin')->name('orders');
-
-require __DIR__.'/auth.php';

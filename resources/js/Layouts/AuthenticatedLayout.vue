@@ -27,18 +27,32 @@ const showingNavigationDropdown = ref(false);
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <!-- Navigation Links for user -->
+                            <div v-if="!$page.props.auth.user.is_admin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     На главную
                                 </NavLink>
                                 <NavLink :href="route('orders')" :active="route().current('orders')">
                                     Мои заявки
                                 </NavLink>
-                                <NavLink :href="route('order_create')" :active="route().current('order_create')">
+                                <NavLink :href="route('orders.create')" :active="route().current('orders.create')">
                                     Создать заявку
                                 </NavLink>
                             </div>
+
+                            <!-- Navigation Links for admin -->
+                            <div v-if="$page.props.auth.user.is_admin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                                    На главную
+                                </NavLink>
+                                <NavLink :href="route('admin.orders')" :active="route().current('admin.orders')">
+                                    Мои заявки
+                                </NavLink>
+                                <NavLink :href="route('orders.create')" :active="route().current('orders.create')">
+                                    Создать заявку
+                                </NavLink>
+                            </div>
+
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">

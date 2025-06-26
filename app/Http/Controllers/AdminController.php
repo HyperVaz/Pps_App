@@ -12,7 +12,8 @@ class AdminController extends Controller
     {
         $ordersCount = Orders::count();
         return inertia('Dashboard', [
-            'ordersCount' => $ordersCount
+            'ordersCount' => $ordersCount,
+            'is_admin' => true,
         ]);
     }
     public function index()

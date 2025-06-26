@@ -60,6 +60,9 @@ class OrderController extends Controller
                 ]);
             }
         }
+        if (auth()->user()->is_admin){
+            return redirect(route('admin.orders'));
+        }
         return redirect(route('orders'));
     }
 }

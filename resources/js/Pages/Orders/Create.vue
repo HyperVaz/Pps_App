@@ -195,7 +195,7 @@ export default {
             this.pictures.forEach((value, index) => {
                 formData.append(`pictures[${index}]`, value.file);
             })
-            this.$inertia.post('/store', formData, {
+            this.$inertia.post(route('orders.store'), formData, {
                 onSuccess: () => {
                     this.resetForm();
                 }

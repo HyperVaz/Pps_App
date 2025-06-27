@@ -28,7 +28,7 @@
                         <td class="px-6 py-4 text-sm text-gray-500 max-w-xs truncate">{{order.description}}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{formatDate(order.created_at)}}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
-            <span :class="{
+            <span v-if="!is_admin" :class="{
               'bg-yellow-100 text-yellow-800': order.status === 'В процессе...',
               'bg-green-100 text-green-800': order.status === 'Завершено',
               'bg-red-100 text-red-800': order.status === 'Отменено'
@@ -36,11 +36,10 @@
               {{order.status}}
             </span>
                             <div v-if="is_admin">
-                                <select>
-                                    <option value="option1">В процессе</option>
-                                    <option value="option2">Принят в работу</option>
-                                    <option value="option3">Готов</option>
-                                    <!-- Add more options as needed -->
+                                <select v-model="status" name="stats" id="stats">
+                                    <option value="В процессе">В процессе</option>
+                                    <option value="Принят в работу">Принят в работу</option>
+                                    <option value="Готов">Готов</option>
                                 </select>
                             </div>
                         </td>
@@ -64,7 +63,10 @@
                             </div>
                         </td>
                         <td v-if="order.complete_time != null" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{formatDate(order.complete_time)}}</td>
-                        <td v-if="order.complete_time == null" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Неизвестно</td>
+                        <td v-if="order.complete_time == null & !is_admin" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Неизвестно</td>
+                        <td v-if="is_admin" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                            <input v-model="complete_time" name="date" type="date" id="date">
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-center gap-3">
                                 <button @click="deleteOrder(order.id)"
@@ -74,6 +76,12 @@
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                                     </svg>
+                                </button>
+                                <button :disabled="!complete_time || !status" @click="updateOrder(order.id)"
+                                        class="text-red-500 hover:text-red-700 p-2 rounded-full hover:bg-red-50 transition-colors"
+                                        title="Обновить заказ"
+                                >
+                                    Готово
                                 </button>
                             </div>
                         </td>
@@ -102,7 +110,9 @@ export default {
     data(){
         return{
             showModal: false,
-            currentImage: ''
+            currentImage: '',
+            status: '',
+            complete_time: null,
         }
     },
     props: [
@@ -118,6 +128,17 @@ export default {
     methods:{
         deleteOrder(orderId){
             return this.$inertia.delete(`orders/${orderId}`)
+        },
+        updateOrder(orderId){
+            if (new Date(this.date) < new Date()) {
+                alert('Дата не может быть в прошлом!');
+                return;
+            }
+            return this.$inertia.patch(`orders/${orderId}`, {
+                'status': this.status,
+                'complete_time': this.complete_time,
+                'method': 'PATCH',
+            })
         },
         formatDate(date) {
             return new Date(date).toLocaleDateString('ru-RU')

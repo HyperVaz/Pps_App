@@ -45,6 +45,9 @@ Route::middleware('auth')->group(function () {
         Route::prefix('admin')->middleware('admin')->group(function () {
             Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
             Route::get('/orders', [AdminController::class, 'index'])->name('admin.orders');
+            Route::delete('/orders/{order}', [OrderController::class, 'destroy',
+            ])->name('order.destroy');
+            Route::patch('/orders/{order}', [AdminController::class, 'update'])->name('order.update');
         });
     });
 });

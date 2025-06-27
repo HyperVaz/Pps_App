@@ -19,4 +19,8 @@ class Orders extends Model
     {
         return $this->hasMany(Pictures::class, 'order_id');
     }
+
+    protected $casts = [
+        'complete_time' => 'datetime'
+    ];
 }

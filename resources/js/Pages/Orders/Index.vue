@@ -17,6 +17,7 @@
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Телефон</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Telegram</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Изображения</th>
+                        <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Ориентировочное время сдачи заказа</th>
                         <th class="px-6 py-4 text-left text-xs font-bold text-white uppercase tracking-wider">Действия</th>
                     </tr>
                     </thead>
@@ -62,6 +63,8 @@
                                 >
                             </div>
                         </td>
+                        <td v-if="order.complete_time != null" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">{{formatDate(order.complete_time)}}</td>
+                        <td v-if="order.complete_time == null" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">Неизвестно</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex items-center justify-center gap-3">
                                 <button @click="deleteOrder(order.id)"

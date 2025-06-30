@@ -139,6 +139,7 @@
                         Отправить заявку
                     </button>
                 </div>
+
             </div>
         </form>
     </AuthenticatedLayout>

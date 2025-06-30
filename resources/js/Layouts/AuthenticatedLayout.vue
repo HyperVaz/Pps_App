@@ -15,44 +15,43 @@ const showingNavigationDropdown = ref(false);
         <div class="min-h-screen bg-gray-100">
             <nav class="bg-white border-b border-gray-100">
                 <!-- Primary Navigation Menu -->
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div class="flex justify-between h-16">
-                        <div class="flex">
+                <div class="max-w-7xl mx-auto px-3 sm:px-5 lg:px-8">
+                    <div class="flex justify-between h-14 sm:h-16">
+                        <div class="flex items-center">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
-                                        class="block h-9 w-auto fill-current text-gray-800"
+                                        class="block h-8 sm:h-9 w-auto fill-current text-gray-800"
                                     />
                                 </Link>
                             </div>
 
                             <!-- Navigation Links for user -->
-                            <div v-if="!$page.props.auth.user.is_admin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                            <div v-if="!$page.props.auth.user.is_admin" class="hidden space-x-6 sm:space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-sm sm:text-base pb-2">
                                     На главную
                                 </NavLink>
-                                <NavLink :href="route('orders')" :active="route().current('orders')">
+                                <NavLink :href="route('orders')" :active="route().current('orders')" class="text-sm sm:text-base pb-2">
                                     Мои заявки
                                 </NavLink>
-                                <NavLink :href="route('orders.create')" :active="route().current('orders.create')">
+                                <NavLink :href="route('orders.create')" :active="route().current('orders.create')" class="text-sm sm:text-base pb-2">
                                     Создать заявку
                                 </NavLink>
                             </div>
 
                             <!-- Navigation Links for admin -->
-                            <div v-if="$page.props.auth.user.is_admin" class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                            <div v-if="$page.props.auth.user.is_admin" class="hidden space-x-6 sm:space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                                <NavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')" class="text-sm sm:text-base">
                                     На главную
                                 </NavLink>
-                                <NavLink :href="route('admin.orders')" :active="route().current('admin.orders')">
+                                <NavLink :href="route('admin.orders')" :active="route().current('admin.orders')" class="text-sm sm:text-base">
                                     Мои заявки
                                 </NavLink>
-                                <NavLink :href="route('orders.create')" :active="route().current('orders.create')">
+                                <NavLink :href="route('orders.create')" :active="route().current('orders.create')" class="text-sm sm:text-base">
                                     Создать заявку
                                 </NavLink>
                             </div>
-
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -84,9 +83,9 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
+                                        <DropdownLink :href="route('profile.edit')"> Настроить профиль </DropdownLink>
                                         <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
+                                            Выйти
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -99,7 +98,7 @@ const showingNavigationDropdown = ref(false);
                                 @click="showingNavigationDropdown = !showingNavigationDropdown"
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
                             >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <svg class="h-5 w-5 sm:h-6 sm:w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                                     <path
                                         :class="{
                                             hidden: showingNavigationDropdown,
@@ -131,14 +130,36 @@ const showingNavigationDropdown = ref(false);
                     :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
                     class="sm:hidden"
                 >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
+                    <div class="pt-2 pb-3 space-y-2">
+                        <!-- User Links -->
+                        <template v-if="!$page.props.auth.user.is_admin">
+                            <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                На главную
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('orders')" :active="route().current('orders')">
+                                Мои заявки
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('orders.create')" :active="route().current('orders.create')">
+                                Создать заявку
+                            </ResponsiveNavLink>
+                        </template>
+
+                        <!-- Admin Links -->
+                        <template v-if="$page.props.auth.user.is_admin">
+                            <ResponsiveNavLink :href="route('admin.dashboard')" :active="route().current('admin.dashboard')">
+                                На главную
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('admin.orders')" :active="route().current('admin.orders')">
+                                Мои заявки
+                            </ResponsiveNavLink>
+                            <ResponsiveNavLink :href="route('orders.create')" :active="route().current('orders.create')">
+                                Создать заявку
+                            </ResponsiveNavLink>
+                        </template>
                     </div>
 
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="pt-4 pb-2 border-t border-gray-200">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">
                                 {{ $page.props.auth.user.name }}
@@ -146,7 +167,7 @@ const showingNavigationDropdown = ref(false);
                             <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
                         </div>
 
-                        <div class="mt-3 space-y-1">
+                        <div class="mt-3 space-y-2">
                             <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
                             <ResponsiveNavLink :href="route('logout')" method="post" as="button">
                                 Log Out
@@ -158,13 +179,13 @@ const showingNavigationDropdown = ref(false);
 
             <!-- Page Heading -->
             <header class="bg-white shadow" v-if="$slots.header">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <div class="max-w-7xl mx-auto py-4 sm:py-5 lg:py-6 px-3 sm:px-5 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class="px-3 sm:px-5 lg:px-8 py-3 sm:py-4">
                 <slot />
             </main>
         </div>

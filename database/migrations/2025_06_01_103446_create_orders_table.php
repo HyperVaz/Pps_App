@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('phone', 20)->nullable();
             $table->string('tg')->nullable();
-            $table->char('status')->default('В процессе...');
+            $table->char('status')->default('На согласовании');
             $table->timestamps();
         });
     }

@@ -5,7 +5,36 @@
             <h2 class="font-sans text-2xl font-semibold text-gray-800 leading-tight">Мои заявки</h2>
         </template>
 
-
+        <transition
+            enter-active-class="transition ease-out duration-300 transform"
+            enter-from-class="translate-y-2 opacity-0"
+            enter-to-class="translate-y-0 opacity-100"
+            leave-active-class="transition ease-in duration-200 transform"
+            leave-from-class="translate-y-0 opacity-100"
+            leave-to-class="translate-y-2 opacity-0"
+        >
+            <div
+                v-if="$page.props.flash.success"
+                class="fixed bottom-6 right-6 z-50 flex items-center justify-between p-4 max-w-sm w-full bg-green-50 border border-green-200 rounded-lg shadow-lg"
+            >
+                <div class="flex items-center">
+                    <svg class="w-5 h-5 text-green-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <p class="text-sm font-medium text-green-800">
+                        {{ $page.props.flash.success }}
+                    </p>
+                </div>
+                <button
+                    @click="$page.props.flash.success = null"
+                    class="text-green-500 hover:text-green-700 focus:outline-none"
+                >
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+        </transition>
 
         <div class="px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 lg:mt-10">
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
@@ -19,7 +48,7 @@
                         <div class="text-sm font-sans">
                             Статус:
                             <span :class="{
-                                'bg-yellow-100 text-yellow-800': order.status === 'В процессе',
+                                'bg-yellow-100 text-yellow-800': order.status.includes('В процессе'),
                                 'bg-green-100 text-green-800': order.status === 'Готов',
                                 'bg-red-100 text-red-800': order.status === 'Отменено'
                             }" class="px-3 py-1 rounded-full text-xs font-semibold inline-block ml-2">

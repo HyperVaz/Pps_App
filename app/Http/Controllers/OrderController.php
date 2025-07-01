@@ -63,6 +63,6 @@ class OrderController extends Controller
         if (auth()->user()->is_admin){
             return redirect(route('admin.orders'));
         }
-        return redirect(route('orders'))->with('success', 'Заявка создана! С вами свяжется администратор в ближайшее время.');
+        return redirect(route('orders'))->with('success', 'Заявка создана! С вами свяжется администратор в ближайшее время для уточнения деталей заказа.');
     }
 }

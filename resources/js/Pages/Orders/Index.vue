@@ -40,7 +40,12 @@
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
                 <!-- Мобильная версия (карточки) -->
                 <div class="grid grid-cols-1 gap-5 p-5 sm:hidden">
-                    <div v-for="order in orders" :key="order.id" class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-sm hover:shadow-md transition-shadow duration-200">
+                    <div
+                        v-for="order in orders"
+                        :key="order.id"
+                        :class="{'order-active': activeOrderId === order.id, 'order-inactive': activeOrderId !== null && activeOrderId !== order.id}"
+                        class="bg-white border border-gray-200 rounded-xl p-5 space-y-4 shadow-sm hover:shadow-md transition-all duration-300"
+                    >
                         <div v-if="is_admin" class="text-sm font-medium text-gray-900 font-sans">Пользователь: {{order.user.name}}</div>
                         <div class="text-base font-semibold text-gray-900 font-sans">Название: {{order.name}}</div>
                         <div class="text-sm text-gray-600 font-sans">Описание: {{order.description}}</div>
@@ -57,7 +62,14 @@
                         </div>
                         <div v-if="is_admin" class="text-sm font-sans">
                             Изменить статус:
-                            <select v-model="status" name="stats" id="stats" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border">
+                            <select
+                                v-model="status"
+                                @focus="activeOrderId = order.id"
+                                @blur="activeOrderId = null"
+                                name="stats"
+                                id="stats"
+                                class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border"
+                            >
                                 <option value="В процессе">В процессе</option>
                                 <option value="Принят в работу">Принят в работу</option>
                                 <option value="Готов">Готов</option>
@@ -88,7 +100,16 @@
                         <div v-if="order.complete_time == null && !is_admin" class="text-sm text-gray-500 font-sans">Время сдачи: Неизвестно</div>
                         <div v-if="is_admin" class="text-sm font-sans">
                             Установить дату:
-                            <input v-model="complete_time" name="date" type="date" id="date" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border" :placeholder="order.complete_time ? formatDate(order.complete_time) : 'Выберите дату'">
+                            <input
+                                v-model="complete_time"
+                                @focus="activeOrderId = order.id"
+                                @blur="activeOrderId = null"
+                                name="date"
+                                type="date"
+                                id="date"
+                                class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border"
+                                :placeholder="order.complete_time ? formatDate(order.complete_time) : 'Выберите дату'"
+                            >
                         </div>
                         <div class="text-sm pt-3 font-sans">
                             Действия:
@@ -132,7 +153,12 @@
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-100">
-                        <tr v-for="order in orders" :key="order.id" class="hover:bg-gray-50 transition-colors duration-150">
+                        <tr
+                            v-for="order in orders"
+                            :key="order.id"
+                            :class="{'order-active': activeOrderId === order.id, 'order-inactive': activeOrderId !== null && activeOrderId !== order.id}"
+                            class="hover:bg-gray-50 transition-all duration-300"
+                        >
                             <td v-if="is_admin" class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-900 font-sans">{{order.user.name}}</td>
                             <td class="px-5 py-4 whitespace-nowrap text-sm font-medium text-gray-900 font-sans">{{order.name}}</td>
                             <td class="px-5 py-4 text-sm text-gray-600 max-w-xs font-sans">{{order.description}}</td>
@@ -147,7 +173,14 @@
                                 </span>
                             </td>
                             <td v-if="is_admin" class="px-5 py-4 whitespace-nowrap">
-                                <select v-model="status" name="stats" id="stats" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border">
+                                <select
+                                    v-model="status"
+                                    @focus="activeOrderId = order.id"
+                                    @blur="activeOrderId = null"
+                                    name="stats"
+                                    id="stats"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border"
+                                >
                                     <option value="В процессе">В процессе</option>
                                     <option value="Принят в работу">Принят в работу</option>
                                     <option value="Готов">Готов</option>
@@ -176,7 +209,16 @@
                                 {{order.complete_time ? formatDate(order.complete_time) : 'Неизвестно'}}
                             </td>
                             <td v-if="is_admin" class="px-5 py-4 whitespace-nowrap">
-                                <input v-model="complete_time" name="date" type="date" id="date" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border" :placeholder="order.complete_time ? formatDate(order.complete_time) : 'Выберите дату'">
+                                <input
+                                    v-model="complete_time"
+                                    @focus="activeOrderId = order.id"
+                                    @blur="activeOrderId = null"
+                                    name="date"
+                                    type="date"
+                                    id="date"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm py-2 px-3 border"
+                                    :placeholder="order.complete_time ? formatDate(order.complete_time) : 'Выберите дату'"
+                                >
                             </td>
                             <td class="px-5 py-4 whitespace-nowrap">
                                 <div class="flex items-center justify-center gap-3">
@@ -215,6 +257,7 @@
         </div>
     </AuthenticatedLayout>
 </template>
+
 <script>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import {Head, Link} from "@inertiajs/vue3";
@@ -226,6 +269,7 @@ export default {
             currentImage: '',
             status: '',
             complete_time: null,
+            activeOrderId: null,
         }
     },
     props: [
@@ -243,7 +287,7 @@ export default {
             return this.$inertia.delete(`orders/${orderId}`)
         },
         updateOrder(orderId){
-            if (new Date(this.date) < new Date()) {
+            if (new Date(this.complete_time) < new Date()) {
                 alert('Дата не может быть в прошлом!');
                 return;
             }
@@ -264,3 +308,20 @@ export default {
 }
 </script>
 
+<style scoped>
+.order-active {
+    transform: scale(1);
+    opacity: 1;
+    filter: none;
+    z-index: 10;
+    position: relative;
+}
+
+.order-inactive {
+    filter: blur(2px);
+    opacity: 0.6;
+    transform: scale(0.98);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+</style>

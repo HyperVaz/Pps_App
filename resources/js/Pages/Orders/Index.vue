@@ -36,6 +36,21 @@
             </div>
         </transition>
 
+<!--        <div>-->
+<!--            <a-->
+<!--                v-if="user && !user.user_chat_id"-->
+<!--                :href="`https://t.me/${telegram_bot_key}?start=${user.id}`"-->
+<!--                class="px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"-->
+<!--                target="_blank"-->
+<!--            >-->
+<!--                Подписаться на бота-->
+<!--            </a>-->
+<!--            <span v-else class="text-green-500 flex items-center">-->
+<!--      <i class="fas fa-check-circle mr-1"></i>-->
+<!--      Telegram привязан-->
+<!--    </span>-->
+<!--        </div>-->
+
         <div class="px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8 lg:mt-10">
             <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-100">
                 <!-- Мобильная версия (карточки) -->
@@ -276,6 +291,8 @@ export default {
         'orders',
         'pictures',
         'is_admin',
+        'user',
+        'telegram_bot_key'
     ],
     components: {
         Link,

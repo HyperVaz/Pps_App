@@ -9,6 +9,7 @@ use App\Models\Pictures;
 use http\Client\Curl\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 
 class OrderController extends Controller
 {
@@ -19,13 +20,16 @@ class OrderController extends Controller
             'ordersCount' => $ordersCount
         ]);
     }
+
     public function index()
     {
         $orders = Orders::with('pictures')->where('user_id', auth()->id())->get();
         $ordersCount = Orders::where('user_id', auth()->id())->count();
         return inertia('Orders/Index', [
             'orders' => $orders,
-            'ordersCount' => $ordersCount
+            'ordersCount' => $ordersCount,
+            'user' => auth()->user(),
+            'telegram_bot_key' => env('TELEGRAM_BOT_API'),
         ]);
     }
 
@@ -46,7 +50,7 @@ class OrderController extends Controller
             'name' => $request->name,
             'description' => $request->description,
             'phone' => str_replace('-', '', $request->phone),
-            'tg'=> $request->tg
+            'tg' => $request->tg
         ]);
 
         if ($request->hasFile('pictures')) {
@@ -60,9 +64,27 @@ class OrderController extends Controller
                 ]);
             }
         }
-        if (auth()->user()->is_admin){
+        if (auth()->user()->is_admin) {
             return redirect(route('admin.orders'));
         }
+        $phoneMessage = $order->phone ? $order->phone : 'Пользователь не указал свой номер телефона :(';
+        $message = "🎉 *Новый заказ!* 🎉
+
+👤 *Клиент:* {$order->user->name}
+📌 *Услуга:* {$order->name}
+📝 *Описание:*
+{$order->description}
+
+📱 *Контакты:*
+- ☎️ Телефон: {$phoneMessage}
+- ✈️ Telegram: " . ($order->tg ? "@" . ltrim($order->tg, '@') : 'не указан') . "\n" .
+            "Подробнее:" . "http://127.0.0.1:8000/orders";
+        Http::post('https://api.telegram.org/bot'.config('telegram.bot_token').'/sendMessage', [
+            'chat_id' => env('ADMIN_CHAT_ID'),
+            'text' => $message,
+            'parse_mode' => 'Markdown',
+            'disable_web_page_preview' => true
+        ]);
         return redirect(route('orders'))->with('success', 'Заявка создана! С вами свяжется администратор в ближайшее время для уточнения деталей заказа.');
     }
 }

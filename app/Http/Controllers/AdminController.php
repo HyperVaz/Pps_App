@@ -31,5 +31,14 @@ class AdminController extends Controller
     {
         abort_unless(auth()->user()->is_admin, 403);
         $order->update($request->validated());
+        if ($order->user->telegram_chat_id) {
+            $message = "🔄 Статус вашего заказа #{$order->id} изменен на: *{$order->status}*";
+
+            Http::post('https://api.telegram.org/bot'.env('TELEGRAM_BOT_API').'/sendMessage', [
+                'chat_id' => $order->user->user_chat_id,
+                'text' => $message,
+                'parse_mode' => 'Markdown'
+            ]);
+        }
     }
 }
